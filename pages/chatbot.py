@@ -3,7 +3,6 @@ import time
 import streamlit as st
 import openai
 
-
 st.set_page_config(page_title="MU ML Tutor", page_icon="🧑‍🏫")
 st.title("MU ML Tutor Chatbot 🧑‍🏫")
 
@@ -18,7 +17,6 @@ if not st.session_state["auth"] or not st.session_state["openai_key"]:
     st.markdown(f"Please login in the app!")
 
     st.stop()
-
 
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
@@ -50,7 +48,9 @@ if prompt := st.chat_input():
 
             total_time = 0
             while (run_status := openai.beta.threads.runs.retrieve(thread_id=thread_id,
-                                                                  run_id=run.id).status) not in ["cancelled", "failed", "completed", "expired"]:
+                                                                   run_id=run.id).status) not in ["cancelled", "failed",
+                                                                                                  "completed",
+                                                                                                  "expired"]:
                 total_time += 2
                 time.sleep(2)
 
@@ -66,9 +66,8 @@ if prompt := st.chat_input():
                     st.session_state.messages.append({"role": "assistant", "content": r.text.value})
                     st.chat_message("assistant").write(r.text.value)
             else:
-                st.chat_message("assistant").write("oops something went wrong, please try again!")
+                st.chat_message("assistant").write(f"oops something went wrong, please try again! query status :{run_status}")
         except openai.AuthenticationError:
             st.error("Invalid OpenAI API, please refresh page and login with valid openai key.")
         except Exception as err:
             st.error(err)
-
