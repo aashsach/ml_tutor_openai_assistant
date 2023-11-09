@@ -1,8 +1,7 @@
 import streamlit as st
 
-st.set_page_config(page_title="MU ML Tutor", page_icon="🧑‍🏫️")
-
-st.title("MU ML Tutor Login" )
+st.set_page_config(page_title="MU ML Tutor", page_icon="🧑‍🏫")
+st.title("MU ML Tutor Chatbot 🧑‍🏫")
 
 
 if "messages" not in st.session_state:
