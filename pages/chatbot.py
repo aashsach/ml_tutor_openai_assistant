@@ -44,9 +44,12 @@ if prompt := st.chat_input():
         response = openai.beta.threads.messages.list(
             thread_id=thread_id, order="desc"
         )
-        response = response.data[1]
+        try:
+            response = response.data[1]
 
-        for r in response.content:
-            msg = r.text.value
-            st.session_state.messages.append({"role": "assistant", "content": msg})
-            st.chat_message("assistant").write(msg)
+            for r in response.content:
+                msg = r.text.value
+                st.session_state.messages.append({"role": "assistant", "content": msg})
+                st.chat_message("assistant").write(msg)
+        except:
+            st.chat_message("assistant").write("oops something went wrong, please try again!")
