@@ -7,24 +7,23 @@ import openai
 st.set_page_config(page_title="MU ML Tutor", page_icon="🧑‍🏫")
 st.title("MU ML Tutor Chatbot 🧑‍🏫")
 
-openai.api_key = st.session_state.get("openai_key", None)
-
-if "messages" not in st.session_state:
-    st.session_state["messages"] = []
-
 if "auth" not in st.session_state:
     st.session_state["auth"] = False
 
-if "thread_id" not in st.session_state:
-    st.session_state["thread_id"] = openai.beta.threads.create().id
+if "openai_key" not in st.session_state:
+    st.session_state["auth"] = None
 
-thread_id = st.session_state["thread_id"]
-
-if not st.session_state["auth"]:
+if not st.session_state["auth"] or not st.session_state["openai_key"]:
     st.error("unauthorized")
     st.markdown(f"Please login in the app!")
 
     st.stop()
+
+
+if "messages" not in st.session_state:
+    st.session_state["messages"] = []
+
+openai.api_key = st.session_state["openai_key"]
 
 for msg in st.session_state["messages"]:
     st.chat_message(msg["role"]).write(msg["content"])
@@ -33,6 +32,10 @@ if prompt := st.chat_input():
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.chat_message("user").write(prompt)
     with st.spinner("generating response..."):
+        if "thread_id" not in st.session_state:
+            st.session_state["thread_id"] = openai.beta.threads.create().id
+        thread_id = st.session_state["thread_id"]
+
         try:
             message = openai.beta.threads.messages.create(
                 thread_id=thread_id,
