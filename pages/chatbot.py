@@ -54,7 +54,7 @@ if prompt := st.chat_input():
                 total_time += 2
                 time.sleep(2)
 
-                if total_time > 10:
+                if total_time > 15:
                     break
 
             if run_status == "completed":
