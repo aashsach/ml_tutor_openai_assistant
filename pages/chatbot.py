@@ -66,7 +66,9 @@ if prompt := st.chat_input():
                     st.session_state.messages.append({"role": "assistant", "content": r.text.value})
                     st.chat_message("assistant").write(r.text.value)
             else:
-                st.chat_message("assistant").write(f"oops something went wrong, please try again! query status :{run_status}")
+                msg = f"oops something went wrong, please try again! query status :{run_status}"
+                st.session_state.messages.append({"role": "assistant", "content": msg})
+                st.chat_message("assistant").write(msg)
         except openai.AuthenticationError:
             st.error("Invalid OpenAI API, please refresh page and login with valid openai key.")
         except Exception as err:
