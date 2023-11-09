@@ -11,7 +11,7 @@ if "auth" not in st.session_state:
     st.session_state["auth"] = False
 
 if "openai_key" not in st.session_state:
-    st.session_state["auth"] = None
+    st.session_state["openai_key"] = None
 
 if not st.session_state["auth"] or not st.session_state["openai_key"]:
     st.error("unauthorized")
