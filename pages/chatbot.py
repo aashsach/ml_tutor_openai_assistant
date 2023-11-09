@@ -3,6 +3,7 @@ import openai
 
 openai.api_key = st.secrets.openai.api_key
 
+st.title("MU ML Tutor Chatbot" )
 
 @st.cache_resource()
 def get_new_thread():
