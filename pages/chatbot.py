@@ -44,17 +44,19 @@ if prompt := st.chat_input():
             run = openai.beta.threads.runs.create(
                 thread_id=thread_id,
                 assistant_id=st.secrets.openai.assistant_id,
+                timeout=30,
             )
 
             total_time = 0
             while (run_status := openai.beta.threads.runs.retrieve(thread_id=thread_id,
-                                                                   run_id=run.id).status) not in ["cancelled", "failed",
+                                                                   run_id=run.id).status) not in ["cancelled", 
+                                                                                                  "failed",
                                                                                                   "completed",
                                                                                                   "expired"]:
                 total_time += 2
                 time.sleep(2)
 
-                if total_time > 15:
+                if total_time > 45:
                     break
 
             if run_status == "completed":
